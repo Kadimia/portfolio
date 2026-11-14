@@ -1,0 +1,51 @@
+[
+  {
+    "id": "p-agente-ia",
+    "title": "Agente de IA em Node.js",
+    "desc": "Projeto de estudo para aprender a construir agentes de IA: modelo de linguagem, ferramentas e laço de execução.",
+    "status": "doing",
+    "tech": [
+      "Node.js",
+      "LLM",
+      "Agentes de IA"
+    ],
+    "link": "",
+    "createdAt": 4
+  },
+  {
+    "id": "p-loja-cliente",
+    "title": "Loja virtual para cliente",
+    "desc": "Projeto freelance: loja online de vendas e produtos, inspirada em um site de referência do cliente.",
+    "status": "doing",
+    "tech": [
+      "React",
+      "Node.js"
+    ],
+    "link": "",
+    "createdAt": 3
+  },
+  {
+    "id": "p-letras-traduzidas",
+    "title": "Letras traduzidas",
+    "desc": "Sistema que busca músicas e mostra a tradução das letras, feito para a minha mãe.",
+    "status": "doing",
+    "tech": [
+      "React",
+      "API de músicas"
+    ],
+    "link": "",
+    "createdAt": 2
+  },
+  {
+    "id": "p-todo-kanban",
+    "title": "To-do list estilo Kanban",
+    "desc": "Projeto de aprendizado: começa em JavaScript puro e depois é refeito em React.",
+    "status": "doing",
+    "tech": [
+      "JavaScript",
+      "React"
+    ],
+    "link": "",
+    "createdAt": 1
+  }
+]

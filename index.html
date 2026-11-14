@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Victor Alves — Analista de Sistemas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add("js")</script>
+<style>
+  :root{
+    --bg:#06080f; --panel:rgba(255,255,255,.04); --line:rgba(255,255,255,.1);
+    --ink:#e9edf7; --muted:#9aa6bb; --a:#5eead4; --b:#8b5cf6; --c:#38bdf8;
+    --warn:#fb923c; --r:18px;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:70px}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Space Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased;padding-bottom:96px;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(600px circle at var(--gx,70%) var(--gy,10%),rgba(139,92,246,.16),transparent 60%),
+               radial-gradient(500px circle at 10% 90%,rgba(56,189,248,.09),transparent 60%)}
+  #bg{position:fixed;inset:0;z-index:-2;width:100%;height:100%}
+  a{color:var(--a)}
+  h1,h2,h3{margin:0;line-height:1.1;letter-spacing:-.02em}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+  .mono{font-family:var(--mono)}
+  .grad{background:linear-gradient(100deg,var(--a),var(--c) 45%,var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* barra de progresso + topo */
+  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:40;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--a),var(--b))}
+  .top{position:fixed;top:0;left:0;right:0;z-index:30;backdrop-filter:blur(12px);background:rgba(6,8,15,.55);border-bottom:1px solid var(--line)}
+  .top .wrap{display:flex;align-items:center;gap:12px;height:58px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);text-decoration:none;margin-right:auto}
+  .logo{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font:600 13px var(--mono);color:#04100d;background:linear-gradient(135deg,var(--a),var(--c))}
+  .lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .lang button{border:0;background:transparent;padding:6px 12px;font:500 12px var(--mono);color:var(--muted);cursor:pointer}
+  .lang button[aria-pressed="true"]{background:var(--a);color:#04100d}
+  .kbtn{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:6px 12px;border-radius:999px;cursor:pointer;font:500 13px "Space Grotesk"}
+  .kbtn:hover{color:var(--ink);border-color:rgba(94,234,212,.5)}
+  kbd{font:500 11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:1px 6px;color:var(--muted);background:rgba(255,255,255,.04)}
+
+  /* dock de navegação */
+  .dock{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:30;display:flex;gap:2px;padding:6px;border-radius:999px;
+    background:rgba(14,18,30,.78);backdrop-filter:blur(16px);border:1px solid var(--line);box-shadow:0 10px 40px rgba(0,0,0,.5);max-width:calc(100vw - 20px);overflow-x:auto;scrollbar-width:none}
+  .dock::-webkit-scrollbar{display:none}
+  .dock a{display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:999px;text-decoration:none;color:var(--muted);font-weight:500;font-size:14px;white-space:nowrap;transition:background .2s,color .2s}
+  .dock a i{font:500 10px var(--mono);font-style:normal;opacity:.6}
+  .dock a:hover{color:var(--ink);background:rgba(255,255,255,.06)}
+  .dock a[aria-current="true"]{background:linear-gradient(135deg,rgba(94,234,212,.2),rgba(139,92,246,.22));color:#fff;box-shadow:inset 0 0 0 1px rgba(94,234,212,.35)}
+
+  section{padding:96px 0 24px}
+  section:first-of-type{padding-top:130px}
+  .eyebrow{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--a);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--a)}
+  h1{font-size:clamp(38px,6.4vw,74px);font-weight:700;margin-bottom:20px;max-width:880px}
+  h2{font-size:clamp(30px,4.4vw,46px);font-weight:700;margin-bottom:10px}
+  h3{font-size:19px;font-weight:600}
+  .lead{font-size:clamp(17px,2vw,20px);color:#c4cddd;max-width:700px;margin:0}
+  .sub{color:var(--muted);max-width:620px;margin:0 0 30px}
+  .typed{font:500 clamp(16px,2.2vw,22px) var(--mono);color:var(--a);margin:0 0 22px;min-height:1.6em}
+  .caret{display:inline-block;width:9px;height:1.05em;background:var(--a);vertical-align:-3px;margin-left:3px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+
+  /* vidro + holofote do cursor */
+  .glass{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px;backdrop-filter:blur(8px);transition:border-color .25s,transform .15s}
+  .glass:hover{border-color:rgba(94,234,212,.35);background:radial-gradient(380px circle at var(--mx,50%) var(--my,0%),rgba(94,234,212,.11),transparent 45%),var(--panel)}
+  .tilt{will-change:transform;transform-style:preserve-3d}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:11px 20px;border-radius:999px;font:600 15px "Space Grotesk",system-ui,sans-serif;cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .2s,border-color .2s}
+  .btn:hover{transform:translateY(-2px);border-color:rgba(94,234,212,.5)}
+  .btn.primary{background:linear-gradient(120deg,var(--a),var(--c));color:#03120f;border-color:transparent}
+  .btn.primary:hover{box-shadow:0 8px 30px rgba(94,234,212,.35)}
+  .btn.sm{padding:6px 13px;font-size:13px}
+  .btn.danger{color:var(--warn);border-color:rgba(251,146,60,.4)}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+  :focus-visible{outline:2px solid var(--a);outline-offset:3px}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:56px 0 34px}
+  .stat b{display:block;font:700 40px "Space Grotesk",system-ui,sans-serif;letter-spacing:-.03em}
+  .stat span{color:var(--muted);font-size:14px;line-height:1.4;display:block}
+
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+  .chip{font:500 12.5px var(--mono);padding:5px 11px;border-radius:999px;background:rgba(94,234,212,.09);border:1px solid rgba(94,234,212,.22);color:#b7f5ea}
+  .group+.group{margin-top:22px}
+  .group h4{margin:0;font:500 11px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.12em}
+  .info{display:flex;flex-wrap:wrap;gap:12px 30px;color:var(--muted);font-size:15px}
+  .info b{color:var(--ink);font-weight:600}
+
+  /* experiência interativa */
+  .xp{display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:start}
+  .xp-list{display:flex;flex-direction:column;gap:8px}
+  .xp-list button{text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:14px 16px;border-radius:14px;cursor:pointer;font:500 15px "Space Grotesk",system-ui,sans-serif;transition:all .2s;position:relative}
+  .xp-list button small{display:block;font:500 11px var(--mono);color:var(--a);margin-bottom:3px}
+  .xp-list button strong{display:block;color:var(--ink);font-weight:600}
+  .xp-list button:hover{border-color:rgba(94,234,212,.4);transform:translateX(3px)}
+  .xp-list button[aria-selected="true"]{background:linear-gradient(135deg,rgba(94,234,212,.14),rgba(139,92,246,.16));border-color:rgba(94,234,212,.5)}
+  .xp-detail h3{font-size:26px;margin:4px 0 4px}
+  .xp-detail .org{color:var(--muted);margin-bottom:16px}
+  .xp-detail .when{font:500 12px var(--mono);color:var(--a)}
+  .xp-detail ul{list-style:none;margin:0;padding:0}
+  .xp-detail li{position:relative;padding:8px 0 8px 22px;color:#cbd3e2;border-top:1px solid var(--line);animation:up .45s both}
+  .xp-detail li::before{content:"";position:absolute;left:2px;top:17px;width:8px;height:8px;border-radius:2px;background:linear-gradient(135deg,var(--a),var(--b))}
+  @keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* futuro */
+  .fut .num{font:500 12px var(--mono);color:var(--b);margin-bottom:14px;display:block}
+  .fut h3{margin-bottom:10px}
+  .fut p{margin:0;color:#c4cddd}
+
+  /* projetos */
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 22px}
+  .filters{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+  .filters button{border:1px solid var(--line);background:var(--panel);padding:8px 15px;border-radius:999px;font:500 13px var(--mono);cursor:pointer;color:var(--muted)}
+  .filters button[aria-pressed="true"]{background:var(--ink);color:#07090f;border-color:var(--ink)}
+  .proj{display:flex;flex-direction:column;gap:12px}
+  .proj p{margin:0;color:#c4cddd}
+  .badge{align-self:flex-start;font:500 11px var(--mono);padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.08em}
+  .st-done{background:rgba(94,234,212,.15);color:#7ff0dc}
+  .st-doing{background:rgba(251,191,36,.15);color:#fcd34d}
+  .st-planned{background:rgba(139,92,246,.2);color:#c4b5fd}
+  .proj .actions{display:flex;gap:8px;align-items:center;margin-top:auto;flex-wrap:wrap}
+  .proj select{font:500 12px var(--mono);padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:#0e121e;color:var(--ink)}
+  .empty{padding:40px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:var(--r);grid-column:1/-1}
+  .note{font-size:14px;color:var(--warn);background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);padding:10px 14px;border-radius:12px;margin-bottom:16px}
+
+  /* gaveta de novo projeto */
+  .veil{position:fixed;inset:0;background:rgba(2,4,10,.6);backdrop-filter:blur(4px);z-index:50;opacity:0;pointer-events:none;transition:opacity .25s}
+  .veil.on{opacity:1;pointer-events:auto}
+  .drawer{position:fixed;top:0;right:0;bottom:0;width:min(460px,100vw);z-index:60;background:#0b0f1a;border-left:1px solid var(--line);padding:26px;transform:translateX(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);overflow:auto}
+  .drawer.on{transform:none}
+  .drawer h3{font-size:24px;margin-bottom:18px}
+  label{display:block;font:500 12px var(--mono);color:var(--muted);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.08em}
+  input,textarea,select.in{width:100%;font:15px "Space Grotesk",system-ui,sans-serif;padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:#0e121e;color:var(--ink)}
+  input:focus,textarea:focus,select.in:focus{outline:2px solid var(--a);outline-offset:1px}
+  textarea{min-height:100px;resize:vertical}
+
+  /* currículos e contato */
+  .cv{display:flex;flex-direction:column;gap:16px}
+  .cv .top2{display:flex;gap:16px;align-items:center}
+  .cv .ico{width:50px;height:62px;border-radius:8px;display:grid;place-items:center;font:600 13px var(--mono);color:#04100d;background:linear-gradient(160deg,var(--a),var(--b))}
+  .cv small{color:var(--muted);font:12px var(--mono)}
+  .contact{display:flex;flex-direction:column;gap:20px;align-items:flex-start}
+  .big{font:700 clamp(24px,5vw,50px) "Space Grotesk",system-ui,sans-serif;letter-spacing:-.03em;word-break:break-all;text-decoration:none}
+  footer{padding:40px 0 10px;color:var(--muted);font:12px var(--mono)}
+
+  /* paleta de comandos */
+  .pal{position:fixed;left:50%;top:16vh;transform:translateX(-50%) scale(.97);width:min(600px,calc(100vw - 24px));z-index:70;background:#0b0f1a;border:1px solid rgba(94,234,212,.35);border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.7);opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
+  .pal.on{opacity:1;pointer-events:auto;transform:translateX(-50%)}
+  .pal input{border:0;border-bottom:1px solid var(--line);border-radius:18px 18px 0 0;padding:18px 20px;font-size:17px;background:transparent}
+  .pal input:focus{outline:none}
+  .pal ul{list-style:none;margin:0;padding:8px;max-height:46vh;overflow:auto}
+  .pal li a,.pal li button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;background:transparent;color:var(--ink);padding:11px 12px;border-radius:10px;font:500 15px "Space Grotesk",system-ui,sans-serif;cursor:pointer;text-decoration:none}
+  .pal li .k{margin-left:auto}
+  .pal li.sel a,.pal li.sel button{background:linear-gradient(120deg,rgba(94,234,212,.16),rgba(139,92,246,.18))}
+  .pal .hint{padding:10px 18px;border-top:1px solid var(--line);color:var(--muted);font:11px var(--mono)}
+  .pal .nil{padding:22px;text-align:center;color:var(--muted)}
+
+  .toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%) translateY(10px);background:#0b0f1a;border:1px solid rgba(94,234,212,.4);padding:9px 16px;border-radius:999px;font:500 13px var(--mono);z-index:80;opacity:0;transition:all .25s;pointer-events:none}
+  .toast.on{opacity:1;transform:translateX(-50%)}
+
+  .js .rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+  .js .rv.in{opacity:1;transform:none}
+
+  @media (max-width:760px){
+    .xp{grid-template-columns:1fr}
+    .xp-list{flex-direction:row;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+    .xp-list button{min-width:190px}
+    .kbtn span.t{display:none}
+    .dock a i{display:none}
+    section{padding-top:76px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .js .rv{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="progress" id="progress"></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#sobre"><span class="logo">VA</span>Victor Alves</a>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button data-l="pt" aria-pressed="true">PT</button>
+      <button data-l="en" aria-pressed="false">EN</button>
+    </div>
+    <button class="kbtn" id="palBtn" aria-label="Abrir paleta de comandos"><span class="t" data-t="goto"></span><kbd id="kHint">Ctrl K</kbd></button>
+  </div>
+</header>
+
+<nav class="dock" id="dock" aria-label="Seções"></nav>
+
+<main class="wrap">
+  <!-- SOBRE -->
+  <section id="sobre" data-sec>
+    <div class="eyebrow" data-t="hello"></div>
+    <h1 data-t-html="headline"></h1>
+    <p class="typed"><span data-t="build"></span> <span id="typed"></span><span class="caret"></span></p>
+    <p class="lead" data-t="intro"></p>
+    <div class="cta" id="heroCta"></div>
+    <div class="stats rv" id="stats"></div>
+
+    <div class="grid g2 rv">
+      <div class="glass">
+        <h3 data-t="skillsTitle"></h3>
+        <div id="skills" style="margin-top:16px"></div>
+      </div>
+      <div class="grid">
+        <div class="glass"><h3 data-t="eduTitle"></h3><div id="edu" style="margin-top:14px"></div></div>
+        <div class="glass"><h3 data-t="langTitle"></h3><div class="chips" id="langs"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIÊNCIA -->
+  <section id="experiencia" data-sec>
+    <div class="eyebrow" data-t="n02"></div>
+    <h2 data-t="expTitle"></h2>
+    <p class="sub" data-t="expSub"></p>
+    <div class="xp rv">
+      <div class="xp-list" id="xpList" role="tablist" aria-orientation="vertical"></div>
+      <div class="glass xp-detail" id="xpDetail" role="tabpanel" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- FUTURO -->
+  <section id="futuro" data-sec>
+    <div class="eyebrow" data-t="n03"></div>
+    <h2 data-t="futTitle"></h2>
+    <p class="sub" data-t="futSub"></p>
+    <div class="grid g2 rv" id="future"></div>
+  </section>
+
+  <!-- PROJETOS -->
+  <section id="projetos" data-sec>
+    <div class="eyebrow" data-t="n04"></div>
+    <h2 data-t="projTitle"></h2>
+    <p class="sub" data-t="projSub"></p>
+    <div id="projNote"></div>
+    <div class="toolbar rv">
+      <div class="filters" id="filters"></div>
+      <button class="btn primary sm" id="addBtn" hidden></button>
+    </div>
+    <div class="grid g2" id="projects"></div>
+  </section>
+
+  <!-- CURRÍCULOS -->
+  <section id="curriculos" data-sec>
+    <div class="eyebrow" data-t="n05"></div>
+    <h2 data-t="cvTitle"></h2>
+    <p class="sub" data-t="cvSub"></p>
+    <div class="grid g2 rv" id="cvs"></div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato" data-sec>
+    <div class="eyebrow" data-t="n06"></div>
+    <h2 data-t="ctTitle"></h2>
+    <p class="sub" data-t="ctSub"></p>
+    <div class="contact rv" id="contact"></div>
+    <footer data-t="foot"></footer>
+  </section>
+</main>
+
+<!-- gaveta: adicionar projeto -->
+<div class="veil" id="veil"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="dTitle">
+  <h3 id="dTitle" data-t="add"></h3>
+  <form id="addForm" autocomplete="off">
+    <label for="fTitle" data-t="fTitle"></label><input id="fTitle" required maxlength="80">
+    <label for="fStatus" data-t="fStatus"></label><select id="fStatus" class="in"></select>
+    <label for="fDesc" data-t="fDesc"></label><textarea id="fDesc" maxlength="500"></textarea>
+    <label for="fTech" data-t="fTech"></label><input id="fTech" maxlength="120" placeholder="React, Node.js, SQL Server">
+    <label for="fLink" data-t="fLink"></label><input id="fLink" maxlength="300" placeholder="https://">
+    <div style="display:flex;gap:10px;margin-top:22px">
+      <button class="btn primary" type="submit" data-t="save"></button>
+      <button class="btn" type="button" id="cancelBtn" data-t="cancel"></button>
+    </div>
+    <div id="formErr" class="note" style="display:none;margin:16px 0 0"></div>
+  </form>
+</aside>
+
+<!-- paleta de comandos -->
+<div class="pal" id="pal" role="dialog" aria-modal="true" aria-label="Comandos">
+  <input id="palIn" autocomplete="off" aria-label="Buscar">
+  <ul id="palList" role="listbox"></ul>
+  <div class="hint" id="palHint"></div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ===== Links dos currículos (PDFs enviados como assets) ===== */
+const CV_LINKS = { pt: "Victor_Alves_PT.pdf", en: "Victor_Alves_EN.pdf" };
+const SECS=["sobre","experiencia","futuro","projetos","curriculos","contato"];
+const CONTACT={li:"linkedin.com/in/victor-hugo"};
+
+/* ===== Conteúdo bilíngue ===== */
+const T = {
+  pt: {
+    nav:["Sobre","Experiência","Futuro","Projetos","Currículos","Contato"],
+    goto:"Ir para…",
+    hello:"Olá, eu sou o Victor",
+    headline:'Analista de Sistemas entre a <span class="grad">fábrica</span> e o <span class="grad">software</span>.',
+    build:"Eu construo",
+    words:["MES e Track and Trace","integrações com ERP","dashboards em tempo real","interfaces com UX/UI"],
+    intro:"Sou Analista de Sistemas Pleno na SIG Combibloc, onde desenvolvo e dou suporte a um MES de Track and Trace. Transformo processos de fábrica em sistemas integrados e visíveis em tempo real — e estudo UX/UI para que esses sistemas sejam também simples de usar.",
+    cvBtn:"Baixar currículo (PT)", cvBtn2:"Download resume (EN)", seeProj:"Ver projetos",
+    stats:[[3,"","ERPs de clientes integrados ao MES"],[100,"+","formulários de fábrica digitalizados"],[5,"","empresas, de suporte a analista pleno"],[2022,"","promovido a Pleno na SIG"]],
+    skillsTitle:"Habilidades",
+    skills:[
+      ["Bancos de dados e BI",["SQL","T-SQL","SQL Server","PostgreSQL","MySQL","SSRS","Bold Reports","Power BI","Grafana","Power Center","Oracle Database"]],
+      ["Desenvolvimento",["C#","JavaScript","TypeScript","React","HTML","CSS","Java","Excel VBA"]],
+      ["Integração e ferramentas",["ERP (Protheus, Gescooper)","APIs","Git","Node-RED","SoapUI","Talend","Rundeck","SVN"]]
+    ],
+    eduTitle:"Formação",
+    edu:[["Pós-graduação em Desenvolvimento Front-End","FISP — previsão de conclusão: 2026"],["Análise e Desenvolvimento de Sistemas","UniCEUB, Brasília — 2020"]],
+    langTitle:"Idiomas",
+    langs:["Português · nativo","Inglês · avançado","Espanhol · básico"],
+    n02:"02 / Experiência", expTitle:"Experiência profissional",
+    expSub:"Da integração e do suporte técnico ao desenvolvimento de um MES industrial. Escolha uma empresa.",
+    jobs:[
+      {when:"2022 – Atual",short:"SIG Combibloc",role:"Analista de Sistemas Pleno (promovido de Júnior)",org:"SIG Combibloc — Brasil",items:[
+        "Desenvolvo e dou suporte a um sistema MES (Manufacturing Execution System) para projetos de Track and Trace em vários clientes, com C#, SQL Server (T-SQL) e JavaScript.",
+        "Desenvolvi integrações entre o MES e os ERPs de 3 clientes (Mococa, CooperOeste e Líder), incluindo Protheus e Gescooper, banco a banco ou por APIs com Node-RED, usando banco de integração e stored procedures.",
+        "Criei uma integração banco a banco que lê dados do Oracle, processa em C# e carrega no SQL Server.",
+        "Digitalizei mais de 100 formulários de fábrica que estavam em papel ou Excel para formulários dentro do MES.",
+        "Implantei etiquetas de rastreio de pallets e configurei localizações de estoque no armazém.",
+        "Criei dashboards e telas de gestão à vista (Power BI, Grafana) e relatórios (SSRS, Bold Reports) que mostram erros de processo em tempo real, e quem os cometeu, em vez de descobri-los semanas depois — economizando dias de retrabalho.",
+        "Melhorei a interface do MES."]},
+      {when:"2022",short:"Asset Telecom / OI",role:"Analista de Sistemas de Telecomunicações",org:"Asset Telecom / OI — Brasil",items:[
+        "Desenvolvi em PHP e administrei bancos de dados.","Auditei e processei dados de faturamento em Excel (VBA)."]},
+      {when:"2021 – 2022",short:"Heiliger Tech",role:"Analista de Integração",org:"Heiliger Tech — Brasil",items:[
+        "Escrevi e revisei especificações funcionais (XML/Java) em colaboração com desenvolvedores.",
+        "Criei cenários de testes unitários e de integração para APIs e serviços.",
+        "Validei entregas com testes integrados no SoapUI e carreguei dados com Talend.",
+        "Criei jobs de integração no Rundeck."]},
+      {when:"2020 – 2021",short:"Stefanini Brasil",role:"Suporte Técnico Nível 1",org:"Stefanini Brasil — Brasil",items:["Prestei suporte de primeiro nível a clientes, realizando os procedimentos iniciais e a abertura de chamados."]},
+      {when:"2019",short:"ANVISA",role:"Estagiário de Banco de Dados / BI",org:"ANVISA — Brasília",items:["Atuei com business intelligence e bancos de dados usando Power Center, Power BI e Oracle Database."]}
+    ],
+    n03:"03 / Futuro", futTitle:"Para onde estou indo",
+    futSub:"O que quero construir nos próximos anos, a partir do que já faço na indústria.",
+    future:[
+      ["Front-end e UX/UI","Concluir a pós-graduação em Front-End (FISP) e crescer em React e TypeScript, somando UX/UI: fluxos com menos cliques, clareza visual e acessibilidade. Quero aplicar esse olhar nos sistemas que já construo, como o MES e as telas de gestão à vista, para que o operador resolva o que precisa rápido e sem erro.",["React","TypeScript","UX/UI","Acessibilidade"]],
+      ["Full stack de ponta a ponta","Somar Node.js/Express e PostgreSQL ao que já domino em C# e SQL Server, com arquitetura em camadas e boas práticas.",["Node.js","Express","PostgreSQL"]],
+      ["IA aplicada ao trabalho","Aprender a construir agentes de IA (modelo + ferramentas + laço) para automatizar consultas, integrações e rotinas operacionais.",["Agentes de IA","Node.js"]],
+      ["Produtos e projetos próprios","Lançar projetos pessoais e freelances, e construir um produto próprio além do trabalho — a seção Projetos registra esse caminho.",["Freelance","Produto próprio"]]
+    ],
+    n04:"04 / Projetos", projTitle:"Projetos",
+    projSub:"O que já fiz, o que estou fazendo e o que pretendo fazer.",
+    all:"Todos", st:{done:"Concluído",doing:"Em andamento",planned:"Planejado"},
+    add:"Adicionar projeto", addBtn:"+ Adicionar projeto",
+    fTitle:"Nome do projeto",fStatus:"Status",fDesc:"Descrição",fTech:"Tecnologias (separe por vírgula)",fLink:"Link (opcional)",
+    save:"Salvar projeto",cancel:"Cancelar",
+    empty:"Nenhum projeto aqui ainda.",
+    noDb:"A lista de projetos fica disponível quando a página é aberta por um usuário autenticado.",
+    errSave:"Não foi possível salvar. Verifique se você é o dono ou editor desta página.",
+    remove:"Remover",sure:"Confirmar?",open:"Abrir link ↗",
+    n05:"05 / Currículos", cvTitle:"Currículos", cvSub:"Um clique e o PDF abre — escolha o idioma.",
+    cvs:[["pt","Currículo em Português","Victor_Alves_PT.pdf"],["en","Resume in English","Victor_Alves_EN.pdf"]],
+    dl:"Baixar PDF",
+    n06:"06 / Contato", ctTitle:"Vamos conversar?", ctSub:"Estou aberto a oportunidades e projetos que juntem sistemas, dados e boa experiência de uso.",
+    copy:"Copiar telefone", copied:"Telefone copiado", loc:"Brasília, Brasil",
+    foot:"© Victor Alves · Brasília, Brasil",
+    pal:{ph:"Ir para uma seção ou buscar uma ação…",go:"Ir para",dlPT:"Baixar currículo (PT)",dlEN:"Baixar currículo (EN)",lang:"Mudar para English",copy:"Copiar telefone",li:"Abrir LinkedIn",add:"Adicionar projeto",filt:"Mostrar projetos: ",none:"Nada encontrado",hint:"↑↓ navegar · Enter abrir · Esc fechar · 1–6 pulam de seção"}
+  },
+  en: {
+    nav:["About","Experience","Future","Projects","Résumés","Contact"],
+    goto:"Jump to…",
+    hello:"Hi, I'm Victor",
+    headline:'A systems analyst between the <span class="grad">factory floor</span> and <span class="grad">software</span>.',
+    build:"I build",
+    words:["MES and Track and Trace","ERP integrations","real-time dashboards","interfaces with UX/UI"],
+    intro:"I'm a Mid-Level Systems Analyst at SIG Combibloc, where I develop and support a Track and Trace MES. I turn factory processes into integrated, real-time systems — and I study UX/UI so those systems are also simple to use.",
+    cvBtn:"Download resume (EN)", cvBtn2:"Baixar currículo (PT)", seeProj:"See projects",
+    stats:[[3,"","client ERPs integrated with the MES"],[100,"+","factory forms digitised"],[5,"","companies, from support to mid-level analyst"],[2022,"","promoted to Mid-Level at SIG"]],
+    skillsTitle:"Skills",
+    skills:[
+      ["Databases and BI",["SQL","T-SQL","SQL Server","PostgreSQL","MySQL","SSRS","Bold Reports","Power BI","Grafana","Power Center","Oracle Database"]],
+      ["Development",["C#","JavaScript","TypeScript","React","HTML","CSS","Java","Excel VBA"]],
+      ["Integration and tools",["ERP (Protheus, Gescooper)","APIs","Git","Node-RED","SoapUI","Talend","Rundeck","SVN"]]
+    ],
+    eduTitle:"Education",
+    edu:[["Postgraduate Program in Front-End Development","FISP — expected 2026"],["Systems Analysis and Development","UniCEUB, Brasília — 2020"]],
+    langTitle:"Languages",
+    langs:["Portuguese · native","English · advanced","Spanish · basic"],
+    n02:"02 / Experience", expTitle:"Professional experience",
+    expSub:"From integration and technical support to building an industrial MES. Pick a company.",
+    jobs:[
+      {when:"2022 – Present",short:"SIG Combibloc",role:"Mid-Level Systems Analyst (promoted from Junior)",org:"SIG Combibloc — Brazil",items:[
+        "Develop and support a Manufacturing Execution System (MES) for Track and Trace projects across multiple clients, using C#, SQL Server (T-SQL) and JavaScript.",
+        "Built integrations between the MES and the ERP systems of 3 clients, including Protheus and Gescooper, database-to-database or through APIs with Node-RED, via an integration database and stored procedures.",
+        "Built a database-to-database integration that reads Oracle data, processes it in C# and loads it into SQL Server.",
+        "Digitised more than 100 factory forms that were on paper or in Excel into forms inside the MES.",
+        "Implemented pallet-tracking labels and configured warehouse stock locations.",
+        "Built dashboards and visual management screens (Power BI, Grafana) and reports (SSRS, Bold Reports) that show process errors in real time, and who made them, instead of finding them weeks later — saving days of rework.",
+        "Improved the MES user interface."]},
+      {when:"2022",short:"Asset Telecom / OI",role:"Telecommunications Systems Analyst",org:"Asset Telecom / OI — Brazil",items:[
+        "Developed in PHP and administered databases.","Audited and processed billing data in Excel (VBA)."]},
+      {when:"2021 – 2022",short:"Heiliger Tech",role:"Integration Analyst",org:"Heiliger Tech — Brazil",items:[
+        "Wrote and reviewed functional specifications (XML/Java) in collaboration with developers.",
+        "Designed unit and integration test scenarios for APIs and services.",
+        "Validated deliverables with integrated testing in SoapUI and loaded data with Talend.",
+        "Created integration jobs in Rundeck."]},
+      {when:"2020 – 2021",short:"Stefanini Brasil",role:"Technical Support Level 1",org:"Stefanini Brasil — Brazil",items:["Provided first-level support to customers, handling initial procedures and ticket opening."]},
+      {when:"2019",short:"ANVISA",role:"Database / BI Intern",org:"ANVISA — Brasília",items:["Worked on business intelligence and databases with Power Center, Power BI and Oracle Database."]}
+    ],
+    n03:"03 / Future", futTitle:"Where I'm heading",
+    futSub:"What I want to build over the next few years, starting from what I already do in industry.",
+    future:[
+      ["Front-end and UX/UI","Finish my postgraduate program in Front-End (FISP) and grow in React and TypeScript, adding UX/UI: flows with fewer clicks, visual clarity and accessibility. I want to bring that eye to the systems I already build, like the MES and the visual management screens, so operators get what they need fast and without errors.",["React","TypeScript","UX/UI","Accessibility"]],
+      ["End-to-end full stack","Add Node.js/Express and PostgreSQL to what I already know in C# and SQL Server, with layered architecture and good practices.",["Node.js","Express","PostgreSQL"]],
+      ["AI applied to real work","Learn to build AI agents (model + tools + loop) to automate queries, integrations and operational routines.",["AI agents","Node.js"]],
+      ["Products and projects of my own","Ship personal and freelance projects, and build a product of my own beyond my day job — the Projects section tracks that path.",["Freelance","Own product"]]
+    ],
+    n04:"04 / Projects", projTitle:"Projects",
+    projSub:"What I've built, what I'm building and what I plan to build.",
+    all:"All", st:{done:"Done",doing:"In progress",planned:"Planned"},
+    add:"Add project", addBtn:"+ Add project",
+    fTitle:"Project name",fStatus:"Status",fDesc:"Description",fTech:"Technologies (comma-separated)",fLink:"Link (optional)",
+    save:"Save project",cancel:"Cancel",
+    empty:"No projects here yet.",
+    noDb:"The project list is available when the page is opened by a signed-in user.",
+    errSave:"Could not save. Make sure you are the owner or an editor of this page.",
+    remove:"Remove",sure:"Confirm?",open:"Open link ↗",
+    n05:"05 / Résumés", cvTitle:"Résumés", cvSub:"One click and the PDF opens — pick a language.",
+    cvs:[["pt","Currículo em Português","Victor_Alves_PT.pdf"],["en","Resume in English","Victor_Alves_EN.pdf"]],
+    dl:"Download PDF",
+    n06:"06 / Contact", ctTitle:"Let's talk?", ctSub:"Open to opportunities and projects that combine systems, data and a good user experience.",
+    copy:"Copy phone", copied:"Phone copied", loc:"Brasília, Brazil",
+    foot:"© Victor Alves · Brasília, Brazil",
+    pal:{ph:"Jump to a section or search an action…",go:"Go to",dlPT:"Download résumé (PT)",dlEN:"Download résumé (EN)",lang:"Mudar para Português",copy:"Copy phone",li:"Open LinkedIn",add:"Add project",filt:"Show projects: ",none:"Nothing found",hint:"↑↓ navigate · Enter open · Esc close · 1–6 jump section"}
+  }
+};
+
+let lang="pt", filter="all", canEdit=false, db=null, projects=[], confirmId=null, xpIndex=0, dbChecked=false, statsSeen=false;
+const $=s=>document.querySelector(s);
+const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
+const t=()=>T[lang];
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const isMac=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent||"");
+
+/* ===== Renderização ===== */
+function renderStatic(){
+  const d=t();
+  document.documentElement.lang=lang==="pt"?"pt-BR":"en";
+  document.querySelectorAll("[data-t]").forEach(n=>{const v=d[n.dataset.t];if(typeof v==="string")n.textContent=v});
+  document.querySelectorAll("[data-t-html]").forEach(n=>{n.innerHTML=d[n.dataset.tHtml]}); // texto fixo do próprio site
+  $("#palIn").placeholder=d.pal.ph;$("#palHint").textContent=d.pal.hint;
+  $("#kHint").textContent=isMac?"⌘ K":"Ctrl K";
+
+  // dock
+  const dock=$("#dock");dock.textContent="";
+  SECS.forEach((k,i)=>{const a=el("a");a.href="#"+k;a.dataset.k=k;a.append(el("i",null,String(i+1)),document.createTextNode(d.nav[i]));
+    a.onclick=e=>{e.preventDefault();go(k)};dock.append(a)});
+  markDock(currentSec);
+
+  // CTA do herói
+  const cta=$("#heroCta");cta.textContent="";
+  const o=lang==="pt"?"en":"pt";
+  const a1=el("a","btn primary",d.cvBtn);a1.href=CV_LINKS[lang];a1.target="_blank";a1.rel="noopener";
+  const a2=el("a","btn",d.cvBtn2);a2.href=CV_LINKS[o];a2.target="_blank";a2.rel="noopener";
+  const a3=el("a","btn",d.seeProj+" →");a3.href="#projetos";a3.onclick=e=>{e.preventDefault();go("projetos")};
+  cta.append(a1,a2,a3);
+
+  renderStats();
+
+  const sk=$("#skills");sk.textContent="";
+  d.skills.forEach(([g,items])=>{const w=el("div","group");w.append(el("h4",null,g));const c=el("div","chips");items.forEach(i=>c.append(el("span","chip",i)));w.append(c);sk.append(w)});
+  const ed=$("#edu");ed.textContent="";
+  d.edu.forEach(([a,b],i)=>{const w=el("div");if(i)w.style.marginTop="14px";const s=el("div",null,b);s.style.color="var(--muted)";w.append(el("b",null,a),s);ed.append(w)});
+  const lg=$("#langs");lg.textContent="";d.langs.forEach(l=>lg.append(el("span","chip",l)));
+
+  renderXp();
+
+  const fu=$("#future");fu.textContent="";
+  d.future.forEach(([h,p,tags],i)=>{const c=el("div","glass fut tilt");c.append(el("span","num","0"+(i+1)),el("h3",null,h),el("p",null,p));
+    const ch=el("div","chips");tags.forEach(x=>ch.append(el("span","chip",x)));c.append(ch);fu.append(c)});
+
+  const cv=$("#cvs");cv.textContent="";
+  d.cvs.forEach(([k,title,file])=>{
+    const c=el("div","glass cv");const top=el("div","top2");top.append(el("div","ico","PDF"));
+    const tx=el("div");tx.append(el("h3",null,title),el("small",null,file));top.append(tx);
+    const a=el("a","btn primary",d.dl);a.href=CV_LINKS[k];a.target="_blank";a.rel="noopener";
+    c.append(top,a);cv.append(c)});
+
+  renderContact();
+
+  const sel=$("#fStatus");const prev=sel.value;sel.textContent="";
+  ["done","doing","planned"].forEach(k=>{const op=el("option",null,d.st[k]);op.value=k;sel.append(op)});sel.value=prev||"doing";
+  $("#addBtn").textContent=d.addBtn;
+  renderFilters();renderProjects();restartTyping();
+}
+
+/* números que contam até o valor final quando entram na tela */
+function renderStats(){
+  const st=$("#stats");st.textContent="";
+  t().stats.forEach(([n,suf,l])=>{
+    const s=el("div","glass stat");const b=el("b");b.className="grad";
+    b.dataset.n=n;b.dataset.suf=suf;b.textContent=(statsSeen||RM?n:0)+suf;
+    s.append(b,el("span",null,l));st.append(s)});
+}
+function countUp(){
+  document.querySelectorAll("#stats b").forEach(b=>{
+    const n=+b.dataset.n,suf=b.dataset.suf,t0=performance.now(),dur=1300;
+    const step=now=>{const p=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-p,3);b.textContent=Math.round(n*e)+suf;if(p<1)requestAnimationFrame(step)};
+    requestAnimationFrame(step)});
+}
+
+/* experiência: lista de empresas + detalhe (setas do teclado também) */
+function renderXp(){
+  const d=t(),list=$("#xpList");list.textContent="";
+  d.jobs.forEach((j,i)=>{
+    const b=el("button");b.setAttribute("role","tab");b.id="xt"+i;
+    b.setAttribute("aria-selected",String(i===xpIndex));b.tabIndex=i===xpIndex?0:-1;
+    b.append(el("small",null,j.when),el("strong",null,j.short));
+    b.onclick=()=>{xpIndex=i;renderXp()};
+    b.onkeydown=e=>{
+      let n=null;
+      if(e.key==="ArrowDown"||e.key==="ArrowRight")n=(i+1)%d.jobs.length;
+      if(e.key==="ArrowUp"||e.key==="ArrowLeft")n=(i-1+d.jobs.length)%d.jobs.length;
+      if(n!=null){e.preventDefault();xpIndex=n;renderXp();$("#xt"+n).focus()}};
+    list.append(b)});
+  const j=d.jobs[xpIndex],box=$("#xpDetail");box.textContent="";
+  box.setAttribute("aria-labelledby","xt"+xpIndex);
+  const ul=el("ul");j.items.forEach((x,k)=>{const li=el("li",null,x);li.style.animationDelay=(k*60)+"ms";ul.append(li)});
+  box.append(el("div","when",j.when),el("h3",null,j.role),el("div","org",j.org),ul);
+}
+
+function renderContact(){
+  const d=t(),c=$("#contact");c.textContent="";
+  const m=el("a","big grad","LinkedIn ↗");m.href="https://www."+CONTACT.li;m.target="_blank";m.rel="noopener";
+  const row=el("div","cta");row.style.marginTop="0";
+  const li=el("a","btn primary",CONTACT.li+" ↗");li.href="https://www."+CONTACT.li;li.target="_blank";li.rel="noopener";
+  row.append(li);
+  const info=el("div","info");
+  info.append(el("span",null,d.loc));
+  c.append(m,row,info);
+}
+let toastT;function toast(msg){const n=$("#toast");n.textContent=msg;n.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>n.classList.remove("on"),1800)}
+
+function renderFilters(){
+  const d=t(),f=$("#filters");f.textContent="";
+  [["all",d.all],["done",d.st.done],["doing",d.st.doing],["planned",d.st.planned]].forEach(([k,l])=>{
+    const b=el("button",null,l);b.setAttribute("aria-pressed",String(filter===k));b.onclick=()=>{filter=k;renderFilters();renderProjects()};f.append(b)});
+}
+function renderProjects(){
+  const d=t(),box=$("#projects");box.textContent="";
+  const list=projects.filter(p=>filter==="all"||p.status===filter);
+  $("#projNote").textContent="";
+  if(!db&&dbChecked){$("#projNote").append(el("div","note",d.noDb))}
+  if(!list.length){box.append(el("div","empty",d.empty));return}
+  list.forEach(p=>{
+    const c=el("div","glass proj");
+    c.append(el("span","badge st-"+p.status,d.st[p.status]||p.status),el("h3",null,p.title));
+    if(p.desc)c.append(el("p",null,p.desc));
+    if(p.tech&&p.tech.length){const ch=el("div","chips");ch.style.marginTop="0";p.tech.forEach(x=>ch.append(el("span","chip",x)));c.append(ch)}
+    const act=el("div","actions");
+    if(p.link&&/^https?:\/\//i.test(p.link)){const a=el("a","btn sm",d.open);a.href=p.link;a.target="_blank";a.rel="noopener";act.append(a)}
+    if(canEdit){
+      const s=el("select");["done","doing","planned"].forEach(k=>{const o=el("option",null,d.st[k]);o.value=k;if(k===p.status)o.selected=true;s.append(o)});
+      s.onchange=()=>db.collection("projects").doc(p.id).update({status:s.value}).catch(()=>{});
+      const rm=el("button","btn sm danger",confirmId===p.id?d.sure:d.remove);
+      rm.onclick=()=>{ if(confirmId===p.id){db.collection("projects").doc(p.id).delete().catch(()=>{});confirmId=null}else{confirmId=p.id;renderProjects()} };
+      act.append(s,rm);
+    }
+    c.append(act);box.append(c);
+  });
+}
+
+/* ===== Navegação: rolagem suave, destaque da seção, progresso ===== */
+let currentSec="sobre";
+function go(id){
+  const n=document.getElementById(id);if(!n)return;
+  n.scrollIntoView({behavior:RM?"auto":"smooth",block:"start"});
+  try{history.replaceState(null,"","#"+id)}catch(e){}
+}
+function markDock(k){
+  document.querySelectorAll("#dock a").forEach(a=>{if(a.dataset.k===k){a.setAttribute("aria-current","true");a.scrollIntoView&&a.scrollIntoView({inline:"center",block:"nearest"})}else a.removeAttribute("aria-current")});
+}
+const spy=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){currentSec=e.target.id;markDock(currentSec)}})},{rootMargin:"-45% 0px -50% 0px"});
+document.querySelectorAll("[data-sec]").forEach(s=>spy.observe(s));
+const prog=$("#progress");
+addEventListener("scroll",()=>{const h=document.documentElement;prog.style.transform="scaleX("+(h.scrollTop/(h.scrollHeight-h.clientHeight||1))+")"},{passive:true});
+
+/* aparecer ao rolar + contagem dos números */
+const rvo=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");rvo.unobserve(e.target);
+  if(e.target.id==="stats"&&!statsSeen){statsSeen=true;if(!RM)countUp()}}})},{threshold:.15});
+document.querySelectorAll(".rv").forEach(n=>rvo.observe(n));
+
+/* holofote do cursor e inclinação 3D */
+addEventListener("pointermove",e=>{
+  document.documentElement.style.setProperty("--gx",e.clientX+"px");
+  document.documentElement.style.setProperty("--gy",e.clientY+"px");
+  const g=e.target.closest&&e.target.closest(".glass");
+  if(g){const r=g.getBoundingClientRect();g.style.setProperty("--mx",(e.clientX-r.left)+"px");g.style.setProperty("--my",(e.clientY-r.top)+"px")}
+  const tl=e.target.closest&&e.target.closest(".tilt");
+  if(tl&&e.pointerType==="mouse"&&!RM){const r=tl.getBoundingClientRect();
+    tl.style.transform="perspective(900px) rotateX("+(((e.clientY-r.top)/r.height-.5)*-7)+"deg) rotateY("+(((e.clientX-r.left)/r.width-.5)*7)+"deg)"}
+},{passive:true});
+document.addEventListener("pointerout",e=>{const tl=e.target.closest&&e.target.closest(".tilt");if(tl&&!tl.contains(e.relatedTarget))tl.style.transform=""});
+
+/* ===== Texto que digita ===== */
+let typeTimer,typeGen=0;
+function restartTyping(){
+  clearTimeout(typeTimer);const gen=++typeGen,words=t().words,out=$("#typed");
+  if(RM){out.textContent=words[0];return}
+  let w=0,i=0,del=false;
+  const tick=()=>{
+    if(gen!==typeGen)return;
+    const word=words[w];
+    out.textContent=word.slice(0,i);
+    let wait=del?28:60;
+    if(!del&&i===word.length){del=true;wait=1400}
+    else if(del&&i===0){del=false;w=(w+1)%words.length;wait=350}
+    else i+=del?-1:1;
+    typeTimer=setTimeout(tick,wait);
+  };
+  tick();
+}
+
+/* ===== Fundo: rede de pontos que reage ao mouse ===== */
+(function(){
+  const c=$("#bg"),x=c.getContext("2d");let w,h,dpr,nodes=[],m={x:-999,y:-999};
+  function size(){dpr=Math.min(2,devicePixelRatio||1);w=innerWidth;h=innerHeight;c.width=w*dpr;c.height=h*dpr;x.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.min(90,Math.floor(w*h/17000));nodes=Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28}))}
+  function draw(){
+    x.clearRect(0,0,w,h);
+    for(const p of nodes){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1}
+    for(let i=0;i<nodes.length;i++){const a=nodes[i];
+      for(let j=i+1;j<nodes.length;j++){const b=nodes[j],d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<130){x.strokeStyle="rgba(94,234,212,"+(.16*(1-d/130))+")";x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke()}}
+      const dm=Math.hypot(a.x-m.x,a.y-m.y);
+      if(dm<170){x.strokeStyle="rgba(139,92,246,"+(.5*(1-dm/170))+")";x.beginPath();x.moveTo(a.x,a.y);x.lineTo(m.x,m.y);x.stroke()}
+      x.fillStyle="rgba(180,240,230,.55)";x.beginPath();x.arc(a.x,a.y,1.4,0,6.3);x.fill()}
+  }
+  function loop(){if(!document.hidden)draw();requestAnimationFrame(loop)}
+  size();addEventListener("resize",size);
+  addEventListener("pointermove",e=>{m.x=e.clientX;m.y=e.clientY},{passive:true});
+  if(RM)draw();else loop();
+})();
+
+/* ===== Idioma ===== */
+function setLang(l){
+  lang=l;
+  document.querySelectorAll(".lang button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.l===lang)));
+  try{localStorage.setItem("va-lang",lang)}catch(e){}
+  renderStatic();
+}
+document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>setLang(b.dataset.l));
+try{const s=localStorage.getItem("va-lang");if(s&&T[s])lang=s;else if((navigator.language||"").toLowerCase().startsWith("en"))lang="en";
+  document.querySelectorAll(".lang button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.l===lang)))}catch(e){}
+
+/* ===== Gaveta: adicionar projeto ===== */
+let lastFocus=null;
+function drawer(open){
+  $("#drawer").classList.toggle("on",open);$("#veil").classList.toggle("on",open);
+  $("#drawer").setAttribute("aria-hidden",String(!open));$("#formErr").style.display="none";
+  if(open){lastFocus=document.activeElement;setTimeout(()=>$("#fTitle").focus(),120)}else if(lastFocus&&lastFocus.focus)lastFocus.focus();
+}
+function openAdd(){if(canEdit){go("projetos");drawer(true)}}
+$("#addBtn").onclick=()=>drawer(true);
+$("#cancelBtn").onclick=()=>{$("#addForm").reset();drawer(false)};
+$("#veil").onclick=()=>{drawer(false);palette(false)};
+$("#addForm").onsubmit=async e=>{
+  e.preventDefault();
+  const title=$("#fTitle").value.trim();if(!title||!db)return;
+  let link=$("#fLink").value.trim();if(link&&!/^https?:\/\//i.test(link))link="https://"+link;
+  const data={title,desc:$("#fDesc").value.trim(),status:$("#fStatus").value,
+    tech:$("#fTech").value.split(",").map(x=>x.trim()).filter(Boolean).slice(0,12),link,createdAt:Date.now()};
+  try{await db.collection("projects").add(data);$("#addForm").reset();drawer(false);toast("✓ "+data.title)}
+  catch(err){const n=$("#formErr");n.textContent=t().errSave;n.style.display="block"}
+};
+
+/* ===== Paleta de comandos (Ctrl/⌘ K ou /) ===== */
+let palItems=[],palSel=0;
+function actions(){
+  const d=t(),p=d.pal,A=[];
+  SECS.forEach((k,i)=>A.push({label:p.go+" "+d.nav[i],key:String(i+1),kw:k,run:()=>go(k)}));
+  A.push({label:p.dlPT,href:CV_LINKS.pt,kw:"cv curriculo resume pdf pt download baixar"});
+  A.push({label:p.dlEN,href:CV_LINKS.en,kw:"cv curriculo resume pdf en download baixar"});
+  A.push({label:p.li,href:"https://www."+CONTACT.li,kw:"linkedin"});
+  A.push({label:p.lang,kw:"idioma language english portugues",run:()=>setLang(lang==="pt"?"en":"pt")});
+  if(canEdit)A.push({label:p.add,kw:"novo projeto add new",run:openAdd});
+  [["all",d.all],["done",d.st.done],["doing",d.st.doing],["planned",d.st.planned]].forEach(([k,l])=>A.push({label:p.filt+l,kw:"filtro projetos filter",run:()=>{filter=k;renderFilters();renderProjects();go("projetos")}}));
+  return A;
+}
+function palRender(){
+  const q=$("#palIn").value.trim().toLowerCase(),ul=$("#palList");ul.textContent="";
+  palItems=actions().filter(a=>!q||(a.label+" "+(a.kw||"")).toLowerCase().includes(q));
+  if(palSel>=palItems.length)palSel=0;
+  if(!palItems.length){ul.append(el("div","nil",t().pal.none));return}
+  palItems.forEach((a,i)=>{
+    const li=el("li",i===palSel?"sel":"");li.setAttribute("role","option");
+    let n;
+    if(a.href){n=el("a");n.href=a.href;n.target="_blank";n.rel="noopener";n.onclick=()=>palette(false)}
+    else{n=el("button");n.onclick=()=>{palette(false);a.run()}}
+    n.append(el("span",null,a.label));if(a.key)n.append(el("kbd","k",a.key));
+    n.onmouseenter=()=>{palSel=i;[...ul.children].forEach((c,j)=>c.classList.toggle("sel",j===i))};
+    li.append(n);ul.append(li)});
+}
+function palette(open){
+  const p=$("#pal");p.classList.toggle("on",open);$("#veil").classList.toggle("on",open);
+  if(open){lastFocus=document.activeElement;$("#palIn").value="";palSel=0;palRender();setTimeout(()=>$("#palIn").focus(),30)}
+  else if(lastFocus&&lastFocus.focus&&!$("#drawer").classList.contains("on"))lastFocus.focus();
+}
+$("#palBtn").onclick=()=>palette(true);
+$("#palIn").oninput=()=>{palSel=0;palRender()};
+$("#palIn").onkeydown=e=>{
+  if(e.key==="ArrowDown"){e.preventDefault();palSel=(palSel+1)%Math.max(1,palItems.length);palRender()}
+  else if(e.key==="ArrowUp"){e.preventDefault();palSel=(palSel-1+palItems.length)%Math.max(1,palItems.length);palRender()}
+  else if(e.key==="Enter"){e.preventDefault();const n=$("#palList .sel a,#palList .sel button");if(n)n.click()}
+};
+addEventListener("keydown",e=>{
+  const typing=/INPUT|TEXTAREA|SELECT/.test((document.activeElement||{}).tagName||"");
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();palette(!$("#pal").classList.contains("on"));return}
+  if(e.key==="Escape"){if($("#pal").classList.contains("on"))palette(false);else if($("#drawer").classList.contains("on"))drawer(false);return}
+  if(typing||e.ctrlKey||e.metaKey||e.altKey)return;
+  if(e.key==="/"){e.preventDefault();palette(true);return}
+  if(/^[1-6]$/.test(e.key))go(SECS[+e.key-1]);
+});
+
+/*DATA-START*/
+/* ===== Projetos lidos de projects.json (edite esse arquivo para mudar a lista) ===== */
+const SEED=[];
+async function initData(){
+  db={};            // objeto vazio: só indica que a lista carregou; visitantes só leem
+  canEdit=false;
+  try{
+    const r=await fetch("projects.json",{cache:"no-store"});
+    if(!r.ok)throw new Error(r.status);
+    projects=await r.json();
+  }catch(e){projects=SEED}
+  projects.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  dbChecked=true;
+  renderProjects();
+}
+/*DATA-END*/
+
+renderStatic();
+initData();
+if(location.hash&&SECS.includes(location.hash.slice(1)))setTimeout(()=>go(location.hash.slice(1)),50);
+</script>
+</body>
+</html>
